@@ -1,0 +1,9 @@
+# =============================================================================
+# Local tmux overrides (not tracked in git)
+# =============================================================================
+# Add personal customizations here. This file is sourced after tmux.conf.
+#
+# Examples:
+#   set -g status-position top
+#   set -g default-shell /usr/local/bin/fish
+#   set -g @continuum-restore 'off'

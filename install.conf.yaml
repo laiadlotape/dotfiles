@@ -10,8 +10,11 @@
     ~/.zsh/aliases: zsh/aliases
     ~/.zsh/functions: zsh/functions
     ~/.tmux.conf: tmux/tmux.conf
+    ~/.tmux.conf.local: tmux/tmux.conf.local
+    ~/.tmux/plugins/tpm: tmux/plugins/tpm
     ~/.fzf.zsh: fzf/fzf.zsh
     ~/.gitconfig: git/gitconfig
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
+    - ['~/.tmux/plugins/tpm/bin/install_plugins || true', Installing tmux plugins]
