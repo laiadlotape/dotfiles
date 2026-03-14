@@ -6,6 +6,9 @@
 
 - clean: ['~']
 
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+
 - link:
     ~/.zshrc: zsh/zshrc
     ~/.zsh/aliases: zsh/aliases
@@ -19,5 +22,4 @@
     ~/.config/starship.toml: starship/starship.toml
 
 - shell:
-    - [git submodule update --init --recursive, Installing submodules]
-    - ['~/.tmux/plugins/tpm/bin/install_plugins || true', Installing tmux plugins]
+    - ['TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins ~/.tmux/plugins/tpm/bin/install_plugins || true', Installing tmux plugins]
