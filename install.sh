@@ -49,7 +49,7 @@ detect_pkg_manager() {
 
 # ─── Package Installation ────────────────────────────────────────────────────
 
-PACKAGES=(zsh tmux fzf git stow fd ripgrep bat)
+PACKAGES=(zsh tmux fzf git stow fd ripgrep bat htop tldr)
 
 # Map generic names → distro-specific names where they differ.
 pkg_name() {
@@ -148,6 +148,42 @@ install_starship() {
   ok "Starship installed"
 }
 
+# ─── Cheat ───────────────────────────────────────────────────────────────────
+
+install_cheat() {
+  if command -v cheat >/dev/null 2>&1; then
+    ok "cheat already installed"
+    return
+  fi
+  info "Installing cheat …"
+
+  local tmp
+  tmp="$(mktemp -d)"
+  trap 'rm -rf "$tmp"' RETURN
+
+  local arch
+  case "$(uname -m)" in
+    x86_64)  arch=amd64 ;;
+    aarch64|arm64) arch=arm64 ;;
+    *) err "Unsupported architecture: $(uname -m)"; return 1 ;;
+  esac
+
+  local os
+  case "$(uname -s)" in
+    Darwin) os=darwin ;;
+    Linux)  os=linux ;;
+    *) err "Unsupported OS for cheat: $(uname -s)"; return 1 ;;
+  esac
+
+  local url="https://github.com/cheat/cheat/releases/latest/download/cheat-${os}-${arch}.gz"
+  curl -fsSL "$url" -o "${tmp}/cheat.gz"
+  gunzip "${tmp}/cheat.gz"
+  chmod +x "${tmp}/cheat"
+  sudo mv "${tmp}/cheat" /usr/local/bin/cheat
+
+  ok "cheat installed"
+}
+
 # ─── Backup Existing Dotfiles ────────────────────────────────────────────────
 
 backup_existing_dotfiles() {
@@ -233,6 +269,7 @@ main() {
   info "Detected OS=$OS, package manager=$PKG"
 
   install_packages
+  install_cheat
   install_omz
   install_starship
   backup_existing_dotfiles
