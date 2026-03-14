@@ -65,6 +65,11 @@ for config_file in "${HOME}/.zsh/functions/"*.zsh(N); do
   source "$config_file"
 done
 
+# --- FZF Configuration ---
+if [[ -f "${HOME}/.fzf.zsh" ]]; then
+  source "${HOME}/.fzf.zsh"
+fi
+
 # --- External Plugins (git submodules) ---
 # These are sourced after oh-my-zsh so they can override/extend behavior
 _dotfiles_dir="${${(%):-%x}:A:h}"
