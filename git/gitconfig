@@ -1,0 +1,33 @@
+[core]
+    excludesFile = ~/.gitignore_global
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    side-by-side = true
+    line-numbers = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+[alias]
+    lg = log --oneline --graph --decorate --all
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+
+[pull]
+    rebase = true
+
+[init]
+    defaultBranch = main
+
+[include]
+    path = ~/.gitconfig.local
