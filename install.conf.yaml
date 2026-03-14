@@ -7,6 +7,8 @@
 
 - link:
     ~/.zshrc: zsh/zshrc
+    ~/.zsh/aliases: zsh/aliases
+    ~/.zsh/functions: zsh/functions
     ~/.tmux.conf: tmux/tmux.conf
     ~/.fzf.zsh: fzf/fzf.zsh
     ~/.gitconfig: git/gitconfig
