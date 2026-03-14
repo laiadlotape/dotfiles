@@ -36,8 +36,3 @@ ff() {
 fd() {
   find . -type d -name "*$1*"
 }
-
-# Quick grep with color
-gr() {
-  grep -rn --color=auto "$@" .
-}

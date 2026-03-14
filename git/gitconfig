@@ -31,3 +31,6 @@
 
 [include]
     path = ~/.gitconfig.local
+[user]
+	email = backuptape6@gmail.com
+	name = laiadlotape
