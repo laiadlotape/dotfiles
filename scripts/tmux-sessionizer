@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# tmux-sessionizer — fzf-based tmux session picker
+# Bound to Alt+s in tmux.conf
+
+set -euo pipefail
+
+# Bail if not in tmux and no sessions exist
+if ! tmux list-sessions &>/dev/null; then
+  echo "No tmux sessions found."
+  exit 0
+fi
+
+# Pick a session with fzf, showing a live pane preview
+selected=$(tmux list-sessions -F '#{session_name}' | \
+  fzf-tmux -p 80%,60% \
+    --reverse \
+    --border rounded \
+    --prompt 'session ∷ ' \
+    --pointer '▶' \
+    --header 'Alt+s: switch session  |  Esc: cancel' \
+    --preview 'tmux capture-pane -t {} -p -e 2>/dev/null | bat --style=plain --color=always --language=log --paging=never 2>/dev/null || tmux capture-pane -t {} -p 2>/dev/null || echo "No preview available"' \
+    --preview-window 'right:60%:wrap' \
+    --bind 'ctrl-/:toggle-preview' \
+    --bind 'mouse:' \
+) || exit 0
+
+# Nothing selected (user cancelled)
+[[ -z "$selected" ]] && exit 0
+
+# Switch or attach to the chosen session
+if [[ -n "${TMUX:-}" ]]; then
+  tmux switch-client -t "$selected"
+else
+  tmux attach-session -t "$selected"
+fi

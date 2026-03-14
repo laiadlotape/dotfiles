@@ -20,6 +20,7 @@
     ~/.gitconfig: git/gitconfig
     ~/.gitignore_global: git/gitignore_global
     ~/.config/starship.toml: starship/starship.toml
+    ~/.local/bin/tmux-sessionizer: scripts/tmux-sessionizer
 
 - shell:
     - ['TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins ~/.tmux/plugins/tpm/bin/install_plugins || true', Installing tmux plugins]
