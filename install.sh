@@ -49,7 +49,7 @@ detect_pkg_manager() {
 
 # ─── Package Installation ────────────────────────────────────────────────────
 
-PACKAGES=(zsh tmux fzf git stow fd ripgrep bat htop tldr)
+PACKAGES=(zsh tmux fzf git stow fd ripgrep bat htop tealdeer)
 
 # Map generic names → distro-specific names where they differ.
 pkg_name() {
@@ -57,26 +57,32 @@ pkg_name() {
   case "$PKG" in
     apt)
       case "$name" in
-        fd)      echo "fd-find" ;;
-        ripgrep) echo "ripgrep" ;;
-        bat)     echo "bat"     ;;
-        *)       echo "$name"   ;;
+        fd)        echo "fd-find"   ;;
+        ripgrep)   echo "ripgrep"   ;;
+        bat)       echo "bat"       ;;
+        tealdeer)  echo "tealdeer"  ;;
+        *)         echo "$name"     ;;
       esac
       ;;
     dnf)
       case "$name" in
-        fd) echo "fd-find" ;;
-        *)  echo "$name"   ;;
+        fd)        echo "fd-find"   ;;
+        tealdeer)  echo "tealdeer"  ;;
+        *)         echo "$name"     ;;
       esac
       ;;
     pacman)
       case "$name" in
-        fd) echo "fd" ;;
-        *)  echo "$name" ;;
+        fd)        echo "fd"        ;;
+        tealdeer)  echo "tealdeer"  ;;
+        *)         echo "$name"     ;;
       esac
       ;;
     brew)
-      echo "$name"
+      case "$name" in
+        tealdeer)  echo "tealdeer"  ;;
+        *)         echo "$name"     ;;
+      esac
       ;;
   esac
 }
