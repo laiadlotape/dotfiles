@@ -136,19 +136,6 @@ install_omz() {
   ok "Oh My Zsh installed"
 }
 
-# ─── TPM (Tmux Plugin Manager) ───────────────────────────────────────────────
-
-install_tpm() {
-  local tpm_dir="${HOME}/.tmux/plugins/tpm"
-  if [ -d "$tpm_dir" ]; then
-    ok "TPM already installed"
-    return
-  fi
-  info "Installing TPM …"
-  git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
-  ok "TPM installed"
-}
-
 # ─── Starship Prompt ─────────────────────────────────────────────────────────
 
 install_starship() {
@@ -159,6 +146,48 @@ install_starship() {
   info "Installing Starship prompt …"
   curl -sS https://starship.rs/install.sh | sh -s -- --yes
   ok "Starship installed"
+}
+
+# ─── Backup Existing Dotfiles ────────────────────────────────────────────────
+
+backup_existing_dotfiles() {
+  local backup_dir="${HOME}/.dotfiles.bak"
+  local targets=(
+    ~/.zshrc
+    ~/.tmux.conf
+    ~/.tmux.conf.local
+    ~/.fzf.zsh
+    ~/.gitconfig
+    ~/.gitignore_global
+    ~/.config/starship.toml
+  )
+  local needed=false
+
+  for f in "${targets[@]}"; do
+    f="${f/#\~/$HOME}"
+    # Back up regular files/dirs that aren't already symlinks
+    if [ -e "$f" ] && [ ! -L "$f" ]; then
+      needed=true
+      break
+    fi
+  done
+
+  if [ "$needed" = false ]; then
+    return
+  fi
+
+  mkdir -p "$backup_dir"
+  info "Backing up existing dotfiles to $backup_dir …"
+
+  for f in "${targets[@]}"; do
+    f="${f/#\~/$HOME}"
+    if [ -e "$f" ] && [ ! -L "$f" ]; then
+      mv "$f" "$backup_dir/"
+      info "  Backed up $(basename "$f")"
+    fi
+  done
+
+  ok "Existing dotfiles backed up"
 }
 
 # ─── Dotbot Symlinks ─────────────────────────────────────────────────────────
@@ -205,8 +234,8 @@ main() {
 
   install_packages
   install_omz
-  install_tpm
   install_starship
+  backup_existing_dotfiles
   run_dotbot
   set_default_shell
 
