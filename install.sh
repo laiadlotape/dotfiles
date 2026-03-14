@@ -149,6 +149,18 @@ install_tpm() {
   ok "TPM installed"
 }
 
+# ─── Starship Prompt ─────────────────────────────────────────────────────────
+
+install_starship() {
+  if command -v starship >/dev/null 2>&1; then
+    ok "Starship already installed"
+    return
+  fi
+  info "Installing Starship prompt …"
+  curl -sS https://starship.rs/install.sh | sh -s -- --yes
+  ok "Starship installed"
+}
+
 # ─── Dotbot Symlinks ─────────────────────────────────────────────────────────
 
 run_dotbot() {
@@ -194,6 +206,7 @@ main() {
   install_packages
   install_omz
   install_tpm
+  install_starship
   run_dotbot
   set_default_shell
 

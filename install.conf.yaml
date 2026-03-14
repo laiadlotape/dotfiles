@@ -15,6 +15,7 @@
     ~/.fzf.zsh: fzf/fzf.zsh
     ~/.gitconfig: git/gitconfig
     ~/.gitignore_global: git/gitignore_global
+    ~/.config/starship.toml: starship/starship.toml
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
