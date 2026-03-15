@@ -133,6 +133,8 @@ else
     tmux switch-client -t "$target" 2>/dev/null || true
   else
     # Outside tmux — let tmuxinator attach directly
+    exec </dev/tty
+    exec <&1
     exec tmuxinator start "$target"
   fi
 fi

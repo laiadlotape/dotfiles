@@ -111,5 +111,7 @@ if [ -n "${TMUX:-}" ]; then
   tmux switch-client -t "$target"
 else
   # Outside tmux — exec replaces this process so tmux gets full terminal control
+  exec </dev/tty
+  exec <&1
   exec tmux attach-session -t "$target"
 fi
