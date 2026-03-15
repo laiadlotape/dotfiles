@@ -42,6 +42,7 @@ typeset -U path  # Deduplicate PATH entries
 path=(
   "${HOME}/.local/bin"
   "${HOME}/bin"
+  "${HOME}/go/bin"
   $path
 )
 export PATH

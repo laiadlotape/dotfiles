@@ -34,3 +34,9 @@
 [user]
 	email = backuptape6@gmail.com
 	name = laiadlotape
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

@@ -20,3 +20,8 @@ alias cls="clear"
 alias h="history"
 alias j="jobs -l"
 alias path='echo -e "${PATH//:/\\n}"'
+
+# Personal
+alias sourcerc="source ~/.zshrc"
+alias editrc="code ~/.zshrc"
+

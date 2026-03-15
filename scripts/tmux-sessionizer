@@ -49,7 +49,6 @@ selected=$(
     --color "fg:-1,bg:-1,hl:#5f87af,fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff" \
     --color "info:#afaf87,prompt:#d7005f,pointer:#af5fff,marker:#87ff00,spinner:#af5fff,header:#87afaf,border:#7aa2f7,label:#e0af68" \
     --no-mouse \
-    --tmux center,80%,60% \
   || true
 )
 
