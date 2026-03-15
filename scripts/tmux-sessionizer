@@ -22,8 +22,8 @@ if [ -n "${TMUX:-}" ]; then
   current_session="$(tmux display-message -p '#S')"
 fi
 
-# Preview: always bottom, 85% height, full width, scroll to bottom
-preview_pos="down:85%:wrap:follow"
+# Preview: always bottom, 90% height, full width, scroll to bottom
+preview_pos="down:90%:wrap:follow"
 
 # Preview: capture full scrollback with session info header
 preview_cmd='
@@ -54,7 +54,7 @@ session_list=$(
   }'
 )
 
-header_text="current: ${current_session:-<detached>}"$'\nEnter:go  Esc:quit  PgUp/Dn  Home/End  ?:preview'
+header_text="current: ${current_session:-<detached>}"$'\nEnter:go  Esc:quit\nPgUp/Dn:scroll  Home/End:top/bot\nalt-p:toggle-preview  alt-w:resize  ?:preview'
 
 selected=$(
   echo "$session_list" |
@@ -71,7 +71,7 @@ selected=$(
     --preview-window "$preview_pos" \
     --bind "page-up:preview-half-page-up,page-down:preview-half-page-down" \
     --bind "home:preview-top,end:preview-bottom" \
-    --bind "alt-p:toggle-preview,alt-w:change-preview-window(down:85%|down:50%|hidden)" \
+    --bind "alt-p:toggle-preview,alt-w:change-preview-window(down:90%|down:50%|hidden)" \
     --bind "?:toggle-preview" \
     --no-mouse \
     --color "fg:-1,bg:-1,hl:#5f87af,fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff" \
