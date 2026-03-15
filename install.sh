@@ -49,7 +49,7 @@ detect_pkg_manager() {
 
 # ─── Package Installation ────────────────────────────────────────────────────
 
-PACKAGES=(zsh tmux fzf git stow fd ripgrep bat htop tealdeer tmuxinator)
+PACKAGES=(zsh tmux fzf git stow fd ripgrep bat htop tealdeer tmuxinator kitty)
 
 # Map generic names → distro-specific names where they differ.
 pkg_name() {
@@ -202,6 +202,7 @@ backup_existing_dotfiles() {
     ~/.gitconfig
     ~/.gitignore_global
     ~/.config/starship.toml
+    ~/.config/kitty/kitty.conf
   )
   local needed=false
 
@@ -243,6 +244,48 @@ run_dotbot() {
   ok "Dotbot symlinks created"
 }
 
+# ─── Default Terminal (Kitty) ─────────────────────────────────────────────────
+
+set_default_terminal() {
+  if ! command -v kitty >/dev/null 2>&1; then
+    warn "kitty not found — skipping default terminal setup"
+    return
+  fi
+
+  local kitty_path
+  kitty_path="$(command -v kitty)"
+
+  # Create theme-aware color symlink for kitty
+  # Reads DOTFILES_THEME from zshrc (default: mint)
+  local theme
+  theme="$(grep '^export DOTFILES_THEME=' "${BASEDIR}/zsh/zshrc" 2>/dev/null \
+           | head -1 | cut -d'"' -f2)"
+  theme="${theme:-mint}"
+
+  local theme_kitty="${HOME}/.config/dotfiles/themes/${theme}/kitty.conf"
+  local current_link="${HOME}/.config/dotfiles/themes/current-kitty.conf"
+  if [ -f "$theme_kitty" ]; then
+    ln -sf "$theme_kitty" "$current_link"
+    ok "Kitty theme set to $theme"
+  else
+    warn "No kitty.conf for theme '$theme' — colors will use kitty defaults"
+  fi
+
+  # Set kitty as default GNOME terminal (Ctrl+Alt+T)
+  if command -v gsettings >/dev/null 2>&1; then
+    gsettings set org.gnome.desktop.default-applications.terminal exec "$kitty_path" 2>/dev/null || true
+    gsettings set org.gnome.desktop.default-applications.terminal exec-arg '' 2>/dev/null || true
+    ok "Kitty set as GNOME default terminal"
+  fi
+
+  # Set kitty as x-terminal-emulator alternative (Debian/Ubuntu)
+  if command -v update-alternatives >/dev/null 2>&1 && [ -x "$kitty_path" ]; then
+    sudo update-alternatives --set x-terminal-emulator "$kitty_path" 2>/dev/null \
+      && ok "Kitty set as x-terminal-emulator" \
+      || warn "Could not set x-terminal-emulator (sudo required)"
+  fi
+}
+
 # ─── Default Shell ────────────────────────────────────────────────────────────
 
 set_default_shell() {
@@ -280,6 +323,7 @@ main() {
   install_starship
   backup_existing_dotfiles
   run_dotbot
+  set_default_terminal
   set_default_shell
 
   ok "Bootstrap complete!"

@@ -26,6 +26,7 @@
     ~/.local/bin/tmux-metrics: scripts/tmux-metrics
     ~/.local/bin/tmux-net-stat: scripts/tmux-net-stat
     ~/.config/tmuxinator: tmuxinator
+    ~/.config/kitty/kitty.conf: kitty/kitty.conf
 
 - shell:
     - ['TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins ~/.tmux/plugins/tpm/bin/install_plugins || true', Installing tmux plugins]
