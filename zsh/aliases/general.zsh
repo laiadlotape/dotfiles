@@ -21,6 +21,9 @@ alias h="history"
 alias j="jobs -l"
 alias path='echo -e "${PATH//:/\\n}"'
 
+# Tmuxinator
+alias mux="tmuxinator"
+
 # Personal
 alias sourcerc="source ~/.zshrc"
 alias editrc="code ~/.zshrc"

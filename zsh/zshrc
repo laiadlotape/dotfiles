@@ -69,8 +69,14 @@ path=(
 export PATH
 
 # --- Exports ---
-export EDITOR="${EDITOR:-vim}"
-export VISUAL="${VISUAL:-vim}"
+# Prefer VS Code if available, fall back to nano
+if command -v code &>/dev/null; then
+  export EDITOR="code --wait"
+  export VISUAL="code --wait"
+else
+  export EDITOR="nano"
+  export VISUAL="nano"
+fi
 export PAGER="${PAGER:-less}"
 export LANG="${LANG:-en_US.UTF-8}"
 export LC_ALL="${LC_ALL:-en_US.UTF-8}"
