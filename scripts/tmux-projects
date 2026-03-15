@@ -137,7 +137,7 @@ edit_cmd="
   project=\"\${entry%%  *}\"
   yml=\"${PROJECTS_DIR}/\${project}.yml\"
   if [ -f \"\$yml\" ]; then
-    nano \"\$yml\"
+    nano \"\$yml\" < /dev/tty > /dev/tty
     if tmux has-session -t \"\$project\" 2>/dev/null; then
       printf 'Restart project %s? [y/N] ' \"\$project\"
       read -r answer < /dev/tty
