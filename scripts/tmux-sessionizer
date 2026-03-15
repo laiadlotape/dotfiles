@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 #
-# tmux-sessionizer — aesthetic fzf session picker for tmux
+# tmux-sessionizer — polished fzf session navigator for tmux
 #
-# Bound to Alt+s in tmux.conf. Lists all tmux sessions with a live
-# pane-content preview. Supports mouse wheel and PgUp/PgDn scrolling
-# in the preview pane.
+# Bound to Alt+q in tmux.conf. Lists all tmux sessions with rich info
+# and a full-scrollback pane preview. Adaptive layout based on terminal size.
 #
 # Works for both:
 #   - Switching between sessions (when already attached)
@@ -23,32 +22,65 @@ if [ -n "${TMUX:-}" ]; then
   current_session="$(tmux display-message -p '#S')"
 fi
 
-# Preview: capture visible pane content from the target session's active window
+# Detect terminal width for adaptive preview layout
+term_width=$(tput cols 2>/dev/null || echo 80)
+if [ "$term_width" -ge 120 ]; then
+  preview_pos="right:55%:wrap"
+else
+  preview_pos="down:60%:wrap"
+fi
+
+# Preview: capture full scrollback with session info header
 preview_cmd='
   session={}
-  # Strip everything after the colon (fzf formatting)
   session="${session%%:*}"
-  # Capture the active pane of that session
-  tmux capture-pane -t "$session" -p -e 2>/dev/null || echo "(no preview available)"
+  cwd=$(tmux display-message -t "$session" -p "#{pane_current_path}" 2>/dev/null || echo "?")
+  cmd=$(tmux display-message -t "$session" -p "#{pane_current_command}" 2>/dev/null || echo "?")
+  printf "\033[1;34m[%s]\033[0m  \033[0;36m%s\033[0m  \033[0;33m(%s)\033[0m\n" "$session" "$cwd" "$cmd"
+  echo "────────────────────────────────────────────"
+  tmux capture-pane -t "$session" -p -e -S - 2>/dev/null || echo "(no preview available)"
 '
 
+# Rich session list: name, window count, attached status, age, cwd
+session_list=$(
+  tmux list-sessions -F '#{session_name}:#{session_windows}:#{session_attached}:#{session_created}:#{pane_current_path}' 2>/dev/null |
+  awk -v now="$(date +%s)" -v cur="$current_session" -F: '{
+    name=$1; wins=$2; att=$3; created=$4
+    cwd=""
+    for (i=5; i<=NF; i++) cwd = (cwd == "" ? $i : cwd ":" $i)
+    age = now - created
+    if (age < 60)         { unit = "s" }
+    else if (age < 3600)  { age = int(age/60);   unit = "m" }
+    else if (age < 86400) { age = int(age/3600);  unit = "h" }
+    else                  { age = int(age/86400); unit = "d" }
+    attached = (att > 0) ? " attached" : ""
+    marker   = (name == cur) ? " ◆" : ""
+    printf "%s: %dw%s %d%s ago  %s%s\n", name, wins, attached, age, unit, cwd, marker
+  }'
+)
+
+header_text="current: ${current_session:-<detached>}"$'\nEnter:switch  Esc:cancel  PgUp/PgDn:scroll  Home/End:top/bot  ?:preview  Alt+p:toggle  Alt+w:cycle'
+
 selected=$(
-  tmux list-sessions -F "#{session_name}: #{session_windows} windows (#{session_attached} attached)" |
+  echo "$session_list" |
   fzf \
     --reverse \
     --border rounded \
     --border-label " tmux sessions " \
     --border-label-pos 2 \
     --info inline \
-    --header "current: ${current_session:-<detached>}" \
+    --header "$header_text" \
     --prompt "session ▶ " \
     --pointer "▶" \
     --preview "$preview_cmd" \
-    --preview-window "right:60%:wrap" \
+    --preview-window "$preview_pos" \
     --bind "page-up:preview-half-page-up,page-down:preview-half-page-down" \
+    --bind "home:preview-top,end:preview-bottom" \
+    --bind "alt-p:toggle-preview,alt-w:change-preview-window(right|down|hidden)" \
+    --bind "?:toggle-preview" \
+    --mouse \
     --color "fg:-1,bg:-1,hl:#5f87af,fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff" \
     --color "info:#afaf87,prompt:#d7005f,pointer:#af5fff,marker:#87ff00,spinner:#af5fff,header:#87afaf,border:#7aa2f7,label:#e0af68" \
-    --no-mouse \
   || true
 )
 
