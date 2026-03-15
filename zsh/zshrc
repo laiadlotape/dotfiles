@@ -3,7 +3,7 @@
 
 # --- Theme ---
 # Change this one line to switch themes: lavender | rose | mint | peach
-export DOTFILES_THEME="lavender"
+export DOTFILES_THEME="mint"
 
 _themes_dir="${HOME}/.config/dotfiles/themes"
 if [[ -f "${_themes_dir}/${DOTFILES_THEME}/colors.sh" ]]; then
