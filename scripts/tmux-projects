@@ -115,22 +115,24 @@ fi
 target="${selected%%  *}"
 
 if tmux has-session -t "$target" 2>/dev/null; then
-  # Session already running — switch to it
+  # Session already running — switch or attach
   if [ -n "${TMUX:-}" ]; then
     tmux switch-client -t "$target"
   else
-    tmux attach-session -t "$target"
+    exec tmux attach-session -t "$target"
   fi
 else
   # Session not running — start it with tmuxinator
   if ! command -v tmuxinator &>/dev/null; then
-    echo "tmuxinator not installed. Run: gem install tmuxinator" >&2
+    echo "tmuxinator not installed. Run: sudo apt install tmuxinator" >&2
     sleep 2
     exit 1
   fi
-  tmuxinator start "$target" --no-stdin
-  # After starting, switch/attach to the new session
   if [ -n "${TMUX:-}" ]; then
+    tmuxinator start "$target" --no-stdin
     tmux switch-client -t "$target" 2>/dev/null || true
+  else
+    # Outside tmux — let tmuxinator attach directly
+    exec tmuxinator start "$target"
   fi
 fi

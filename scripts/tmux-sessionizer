@@ -110,6 +110,6 @@ if [ -n "${TMUX:-}" ]; then
   # Already inside tmux — switch client
   tmux switch-client -t "$target"
 else
-  # Outside tmux — attach
-  tmux attach-session -t "$target"
+  # Outside tmux — exec replaces this process so tmux gets full terminal control
+  exec tmux attach-session -t "$target"
 fi
