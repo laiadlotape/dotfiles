@@ -24,7 +24,7 @@ if [ -n "${TMUX:-}" ]; then
 fi
 
 # Preview: right side 70% width, scroll to bottom — leaves session list visible on left
-preview_pos="down:70%:wrap:follow"
+preview_pos="right:80%:wrap:follow"
 
 # Preview: capture full scrollback with session info header
 preview_cmd='
