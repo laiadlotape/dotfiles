@@ -32,6 +32,7 @@ plugins=(
   docker
   kubectl
   fzf
+  tmuxinator
 )
 
 # Custom plugins installed as git submodules

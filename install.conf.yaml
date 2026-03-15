@@ -24,6 +24,7 @@
     ~/.local/bin/tmux-sessionizer: scripts/tmux-sessionizer
     ~/.local/bin/tmux-metrics: scripts/tmux-metrics
     ~/.local/bin/tmux-net-stat: scripts/tmux-net-stat
+    ~/.tmuxinator: tmuxinator
 
 - shell:
     - ['TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins ~/.tmux/plugins/tpm/bin/install_plugins || true', Installing tmux plugins]
