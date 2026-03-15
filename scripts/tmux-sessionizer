@@ -22,13 +22,8 @@ if [ -n "${TMUX:-}" ]; then
   current_session="$(tmux display-message -p '#S')"
 fi
 
-# Detect terminal width for adaptive preview layout
-term_width=$(tput cols 2>/dev/null || echo 80)
-if [ "$term_width" -ge 120 ]; then
-  preview_pos="right:55%:wrap"
-else
-  preview_pos="down:60%:wrap"
-fi
+# Preview: always bottom, 85% height, full width, scroll to bottom
+preview_pos="down:85%:wrap:follow"
 
 # Preview: capture full scrollback with session info header
 preview_cmd='
@@ -38,7 +33,7 @@ preview_cmd='
   cmd=$(tmux display-message -t "$session" -p "#{pane_current_command}" 2>/dev/null || echo "?")
   printf "\033[1;34m[%s]\033[0m  \033[0;36m%s\033[0m  \033[0;33m(%s)\033[0m\n" "$session" "$cwd" "$cmd"
   echo "────────────────────────────────────────────"
-  tmux capture-pane -t "$session" -p -e -S - 2>/dev/null || echo "(no preview available)"
+  tmux capture-pane -t "$session" -p -e -J -S - 2>/dev/null || echo "(no preview available)"
 '
 
 # Rich session list: name, window count, attached status, age, cwd
@@ -59,7 +54,7 @@ session_list=$(
   }'
 )
 
-header_text="current: ${current_session:-<detached>}"$'\nEnter:switch  Esc:cancel  PgUp/PgDn:scroll  Home/End:top/bot  ?:preview  Alt+p:toggle  Alt+w:cycle'
+header_text="current: ${current_session:-<detached>}"$'\nEnter:go  Esc:quit  PgUp/Dn  Home/End  ?:preview'
 
 selected=$(
   echo "$session_list" |
@@ -76,9 +71,9 @@ selected=$(
     --preview-window "$preview_pos" \
     --bind "page-up:preview-half-page-up,page-down:preview-half-page-down" \
     --bind "home:preview-top,end:preview-bottom" \
-    --bind "alt-p:toggle-preview,alt-w:change-preview-window(right|down|hidden)" \
+    --bind "alt-p:toggle-preview,alt-w:change-preview-window(down:85%|down:50%|hidden)" \
     --bind "?:toggle-preview" \
-    --mouse \
+    --no-mouse \
     --color "fg:-1,bg:-1,hl:#5f87af,fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff" \
     --color "info:#afaf87,prompt:#d7005f,pointer:#af5fff,marker:#87ff00,spinner:#af5fff,header:#87afaf,border:#7aa2f7,label:#e0af68" \
   || true
