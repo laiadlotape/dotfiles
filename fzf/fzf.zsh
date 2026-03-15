@@ -7,7 +7,11 @@ export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --e
 
 # --- Aesthetic Theme ---
 # Colors come from THEME_FZF_COLORS exported by the active theme (set via DOTFILES_THEME in zshrc)
+# Emoji symbols come from THEME_EMOJI_* exported by the theme's emojis.sh (gentle fallback built-in)
 _fzf_theme_colors="${THEME_FZF_COLORS:-fg:-1,bg:-1,hl:#5f87af,fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff,info:#afaf87,prompt:#d7005f,pointer:#af5fff,marker:#87ff00,spinner:#af5fff,header:#87afaf}"
+_fzf_prompt="${THEME_EMOJI_PROMPT:-∷ }"
+_fzf_pointer="${THEME_EMOJI_POINTER:-▶}"
+_fzf_marker="${THEME_EMOJI_MARKER:-✓}"
 export FZF_DEFAULT_OPTS=" \
   --reverse \
   --border rounded \
@@ -15,12 +19,12 @@ export FZF_DEFAULT_OPTS=" \
   --height 40% \
   --margin 0,1 \
   --padding 0 \
-  --prompt '∷ ' \
-  --pointer '▶' \
-  --marker '✓' \
+  --prompt '${_fzf_prompt}' \
+  --pointer '${_fzf_pointer}' \
+  --marker '${_fzf_marker}' \
   --color ${_fzf_theme_colors} \
   --bind 'ctrl-/:toggle-preview'"
-unset _fzf_theme_colors
+unset _fzf_theme_colors _fzf_prompt _fzf_pointer _fzf_marker
 
 # --- Key Bindings ---
 # CTRL-T: Paste selected files/dirs onto command line

@@ -9,6 +9,12 @@ _themes_dir="${HOME}/.config/dotfiles/themes"
 if [[ -f "${_themes_dir}/${DOTFILES_THEME}/colors.sh" ]]; then
   source "${_themes_dir}/${DOTFILES_THEME}/colors.sh"
 fi
+# Load emoji/icon pack — theme-specific if available, gentle fallback otherwise
+if [[ -f "${_themes_dir}/${DOTFILES_THEME}/emojis.sh" ]]; then
+  source "${_themes_dir}/${DOTFILES_THEME}/emojis.sh"
+elif [[ -f "${_themes_dir}/gentle/emojis.sh" ]]; then
+  source "${_themes_dir}/gentle/emojis.sh"
+fi
 export STARSHIP_CONFIG="${_themes_dir}/${DOTFILES_THEME}/starship.toml"
 unset _themes_dir
 
