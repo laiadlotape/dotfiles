@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Network up/down rate for tmux status bar
+
+IFACE=$(ip route 2>/dev/null | awk '/^default/{print $5; exit}')
+[ -z "$IFACE" ] && IFACE=$(ls /sys/class/net 2>/dev/null | grep -v lo | head -1)
+
+if [ -z "$IFACE" ]; then
+    echo "↓-- ↑--"
+    exit 0
+fi
+
+RX=$(cat "/sys/class/net/$IFACE/statistics/rx_bytes" 2>/dev/null || echo 0)
+TX=$(cat "/sys/class/net/$IFACE/statistics/tx_bytes" 2>/dev/null || echo 0)
+NOW=$(date +%s)
+CACHE="/tmp/.tmux-net-$IFACE"
+
+hrb() {
+    local b=$1
+    if [ "$b" -ge 1048576 ]; then
+        awk "BEGIN{printf \"%.1fM\", $b/1048576}"
+    elif [ "$b" -ge 1024 ]; then
+        echo "$((b / 1024))K"
+    else
+        echo "${b}B"
+    fi
+}
+
+if [ -f "$CACHE" ]; then
+    read -r PREV_RX PREV_TX PREV_T < "$CACHE"
+    DT=$((NOW - PREV_T))
+    [ "$DT" -lt 1 ] && DT=1
+    RX_RATE=$(( (RX - PREV_RX) / DT ))
+    TX_RATE=$(( (TX - PREV_TX) / DT ))
+    [ "$RX_RATE" -lt 0 ] && RX_RATE=0
+    [ "$TX_RATE" -lt 0 ] && TX_RATE=0
+    echo "↓$(hrb "$RX_RATE") ↑$(hrb "$TX_RATE")"
+else
+    echo "↓-- ↑--"
+fi
+
+printf "%s %s %s\n" "$RX" "$TX" "$NOW" > "$CACHE"

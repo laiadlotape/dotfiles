@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Compact system metrics for tmux status: load avg, mem%, [gpu%]
+
+CPU=$(awk '{print $1}' /proc/loadavg)
+MEM=$(free | awk '/^Mem:/{printf "%.0f%%", $3/$2*100}')
+
+GPU=""
+if command -v nvidia-smi >/dev/null 2>&1; then
+    G=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null | \
+        awk 'NR==1{printf "G:%s%%", $1}')
+    [ -n "$G" ] && GPU=" $G"
+fi
+
+echo "cpu:$CPU mem:$MEM$GPU"
