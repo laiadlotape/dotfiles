@@ -9,6 +9,9 @@ export THEME_EMOJI_MARKER="✦"
 # sessionizer
 export THEME_EMOJI_SESSION_PROMPT="session ◈ "
 export THEME_EMOJI_SESSION_POINTER="◈"
+export THEME_EMOJI_SESSION_CURRENT="◈"
+export THEME_EMOJI_SESSION_ATTACHED="✦"
+export THEME_EMOJI_SESSION_AGE="◷"
 
 # tmux status icon prefixes (single-cell Unicode, no wide emoji)
 export THEME_EMOJI_TMUX_SESSION="◈ "
