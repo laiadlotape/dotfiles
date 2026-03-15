@@ -6,6 +6,8 @@
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
 
 # --- Aesthetic Theme ---
+# Colors come from THEME_FZF_COLORS exported by the active theme (set via DOTFILES_THEME in zshrc)
+_fzf_theme_colors="${THEME_FZF_COLORS:-fg:-1,bg:-1,hl:#5f87af,fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff,info:#afaf87,prompt:#d7005f,pointer:#af5fff,marker:#87ff00,spinner:#af5fff,header:#87afaf}"
 export FZF_DEFAULT_OPTS=" \
   --reverse \
   --border rounded \
@@ -16,11 +18,9 @@ export FZF_DEFAULT_OPTS=" \
   --prompt '∷ ' \
   --pointer '▶' \
   --marker '✓' \
-  --color fg:-1,bg:-1,hl:#5f87af \
-  --color fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff \
-  --color info:#afaf87,prompt:#d7005f,pointer:#af5fff \
-  --color marker:#87ff00,spinner:#af5fff,header:#87afaf \
+  --color ${_fzf_theme_colors} \
   --bind 'ctrl-/:toggle-preview'"
+unset _fzf_theme_colors
 
 # --- Key Bindings ---
 # CTRL-T: Paste selected files/dirs onto command line

@@ -20,6 +20,7 @@
     ~/.gitconfig: git/gitconfig
     ~/.gitignore_global: git/gitignore_global
     ~/.config/starship.toml: starship/starship.toml
+    ~/.config/dotfiles/themes: themes
     ~/.local/bin/tmux-sessionizer: scripts/tmux-sessionizer
 
 - shell:

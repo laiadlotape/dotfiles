@@ -1,6 +1,17 @@
 # ~/.zshrc - Main Zsh configuration
 # Managed by dotfiles. Machine-specific overrides go in ~/.zshrc.local
 
+# --- Theme ---
+# Change this one line to switch themes: lavender | rose | mint | peach
+export DOTFILES_THEME="lavender"
+
+_themes_dir="${HOME}/.config/dotfiles/themes"
+if [[ -f "${_themes_dir}/${DOTFILES_THEME}/colors.sh" ]]; then
+  source "${_themes_dir}/${DOTFILES_THEME}/colors.sh"
+fi
+export STARSHIP_CONFIG="${_themes_dir}/${DOTFILES_THEME}/starship.toml"
+unset _themes_dir
+
 # --- Oh-My-Zsh Setup ---
 export ZSH="${HOME}/.oh-my-zsh"
 ZSH_THEME=""  # Disabled — using Starship prompt

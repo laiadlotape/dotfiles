@@ -1,0 +1,90 @@
+# Starship prompt — Mint theme (Everforest)
+
+command_timeout = 1000
+add_newline = true
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$python\
+$nodejs\
+$rust\
+$golang\
+$java\
+$kubernetes\
+$docker_context\
+$cmd_duration\
+$line_break\
+$character"""
+
+[directory]
+truncation_length = 4
+truncate_to_repo = true
+style = "bold #7fbbb3"
+
+[git_branch]
+format = "on [$symbol$branch(:$remote_branch)]($style) "
+symbol = " "
+style = "bold #83c092"
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "bold #e67e80"
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?${count}"
+stashed = "*${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+[cmd_duration]
+min_time = 2000
+format = "took [$duration]($style) "
+style = "bold #dbbc7f"
+
+[python]
+format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+symbol = " "
+style = "bold #dbbc7f"
+
+[nodejs]
+format = "via [$symbol($version )]($style)"
+symbol = " "
+style = "bold #a7c080"
+
+[rust]
+format = "via [$symbol($version )]($style)"
+symbol = " "
+style = "bold #e67e80"
+
+[golang]
+format = "via [$symbol($version )]($style)"
+symbol = " "
+style = "bold #83c092"
+
+[java]
+format = "via [$symbol($version )]($style)"
+symbol = " "
+style = "bold #e69875"
+
+[kubernetes]
+disabled = false
+format = '[$symbol$context( \($namespace\))]($style) '
+symbol = "☸ "
+style = "bold #7fbbb3"
+detect_folders = []
+detect_files = []
+
+[docker_context]
+format = "via [$symbol$context]($style) "
+symbol = " "
+style = "bold #7fbbb3"
+
+[character]
+success_symbol = "[❯](bold #a7c080)"
+error_symbol = "[❯](bold #e67e80)"
