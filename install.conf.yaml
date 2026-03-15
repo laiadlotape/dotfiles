@@ -22,6 +22,7 @@
     ~/.config/starship.toml: starship/starship.toml
     ~/.config/dotfiles/themes: themes
     ~/.local/bin/tmux-sessionizer: scripts/tmux-sessionizer
+    ~/.local/bin/tmux-projects: scripts/tmux-projects
     ~/.local/bin/tmux-metrics: scripts/tmux-metrics
     ~/.local/bin/tmux-net-stat: scripts/tmux-net-stat
     ~/.tmuxinator: tmuxinator
