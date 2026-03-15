@@ -25,8 +25,7 @@
     ~/.local/bin/tmux-projects: scripts/tmux-projects
     ~/.local/bin/tmux-metrics: scripts/tmux-metrics
     ~/.local/bin/tmux-net-stat: scripts/tmux-net-stat
-    ~/.tmuxinator: tmuxinator
+    ~/.config/tmuxinator: tmuxinator
 
 - shell:
     - ['TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins ~/.tmux/plugins/tpm/bin/install_plugins || true', Installing tmux plugins]
-    - ['command -v tmuxinator >/dev/null || (echo "Installing tmuxinator..." && sudo apt-get install -y tmuxinator) || true', Installing tmuxinator]

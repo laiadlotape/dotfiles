@@ -10,6 +10,13 @@ _tmux_sessionizer() {
 zle -N _tmux_sessionizer
 bindkey '\eq' _tmux_sessionizer
 
+_tmux_projects() {
+  ~/.local/bin/tmux-projects
+  zle reset-prompt
+}
+zle -N _tmux_projects
+bindkey '\ew' _tmux_projects
+
 # Create directory and cd into it
 mkcd() {
   mkdir -p "$1" && cd "$1"
