@@ -49,7 +49,7 @@ detect_pkg_manager() {
 
 # ─── Package Installation ────────────────────────────────────────────────────
 
-PACKAGES=(zsh tmux fzf git stow fd ripgrep bat htop tealdeer tmuxinator kitty)
+PACKAGES=(zsh tmux fzf git stow fd ripgrep bat htop tealdeer tmuxinator kitty tree binutils gnome-shell-extension-manager)
 
 # Map generic names → distro-specific names where they differ.
 pkg_name() {
