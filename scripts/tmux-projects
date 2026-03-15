@@ -131,20 +131,22 @@ toggle_cmd="
   esac
 "
 
-# Edit config script (Alt+e): opens nano, then offers restart
+# Edit config script (Alt+e): opens nano, then offers restart if file changed
 edit_cmd="
   entry={}
   project=\"\${entry%%  *}\"
   yml=\"${PROJECTS_DIR}/\${project}.yml\"
   if [ -f \"\$yml\" ]; then
+    _hash_before=\$(md5sum \"\$yml\" | cut -d' ' -f1)
     nano \"\$yml\" < /dev/tty > /dev/tty
-    if tmux has-session -t \"\$project\" 2>/dev/null; then
-      printf 'Restart project %s? [y/N] ' \"\$project\"
+    _hash_after=\$(md5sum \"\$yml\" | cut -d' ' -f1)
+    if [ \"\$_hash_before\" != \"\$_hash_after\" ] && tmux has-session -t \"\$project\" 2>/dev/null; then
+      printf 'Restart project %s? [y/N] ' \"\$project\" > /dev/tty
       read -r answer < /dev/tty
       if [ \"\$answer\" = 'y' ] || [ \"\$answer\" = 'Y' ]; then
         tmuxinator stop \"\$project\" 2>/dev/null || true
         tmuxinator start \"\$project\" --no-stdin 2>/dev/null || true
-        echo \"Project \$project restarted.\"
+        echo \"Project \$project restarted.\" > /dev/tty
         sleep 1
       fi
     fi
