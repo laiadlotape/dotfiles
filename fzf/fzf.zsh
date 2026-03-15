@@ -8,7 +8,7 @@ export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --e
 # --- Aesthetic Theme ---
 # Colors come from THEME_FZF_COLORS exported by the active theme (set via DOTFILES_THEME in zshrc)
 # Emoji symbols come from THEME_EMOJI_* exported by the theme's emojis.sh (gentle fallback built-in)
-_fzf_theme_colors="${THEME_FZF_COLORS:-fg:-1,bg:-1,hl:#5f87af,fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff,info:#afaf87,prompt:#d7005f,pointer:#af5fff,marker:#87ff00,spinner:#af5fff,header:#87afaf}"
+_fzf_theme_colors="${THEME_FZF_COLORS:-fg:-1,bg:-1,hl:#5f87af,fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff,info:#afaf87,prompt:#5f87af,pointer:#af5fff,marker:#87ff00,spinner:#af5fff,header:#87afaf,border:#3a3a3a,gutter:-1}"
 _fzf_prompt="${THEME_EMOJI_PROMPT:-∷ }"
 _fzf_pointer="${THEME_EMOJI_POINTER:-▶}"
 _fzf_marker="${THEME_EMOJI_MARKER:-✓}"

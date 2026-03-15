@@ -6,8 +6,11 @@
 export DOTFILES_THEME="mint"
 
 _themes_dir="${HOME}/.config/dotfiles/themes"
+# Load color theme — theme-specific if available, gentle fallback otherwise
 if [[ -f "${_themes_dir}/${DOTFILES_THEME}/colors.sh" ]]; then
   source "${_themes_dir}/${DOTFILES_THEME}/colors.sh"
+elif [[ -f "${_themes_dir}/gentle/colors.sh" ]]; then
+  source "${_themes_dir}/gentle/colors.sh"
 fi
 # Load emoji/icon pack — theme-specific if available, gentle fallback otherwise
 if [[ -f "${_themes_dir}/${DOTFILES_THEME}/emojis.sh" ]]; then
