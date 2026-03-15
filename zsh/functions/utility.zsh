@@ -1,5 +1,15 @@
 # Utility functions
 
+# tmux-sessionizer — Alt+q keybinding for outside tmux
+# Inside tmux the binding is handled by tmux.conf (display-popup -E).
+# Outside tmux we need a zsh widget so fzf gets a proper TTY.
+_tmux_sessionizer() {
+  ~/.local/bin/tmux-sessionizer
+  zle reset-prompt
+}
+zle -N _tmux_sessionizer
+bindkey '\eq' _tmux_sessionizer
+
 # Create directory and cd into it
 mkcd() {
   mkdir -p "$1" && cd "$1"
