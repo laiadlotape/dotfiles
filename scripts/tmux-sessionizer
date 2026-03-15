@@ -23,7 +23,7 @@ if [ -n "${TMUX:-}" ]; then
 fi
 
 # Preview: right side 70% width, scroll to bottom — leaves session list visible on left
-preview_pos="right:70%:wrap:follow"
+preview_pos="down:70%:wrap:follow"
 
 # Preview: capture full scrollback with session info header
 preview_cmd='
@@ -69,6 +69,7 @@ selected=$(
     --pointer "▶" \
     --preview "$preview_cmd" \
     --preview-window "$preview_pos" \
+    --height 100% \
     --bind "page-up:preview-half-page-up,page-down:preview-half-page-down" \
     --bind "home:preview-top,end:preview-bottom" \
     --bind "alt-p:toggle-preview,alt-w:change-preview-window(right:70%|right:50%|down:80%|hidden)" \
