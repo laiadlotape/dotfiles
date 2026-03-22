@@ -1,0 +1,13 @@
+# /home/lotape6/.config/tmuxinator/tslam.yml
+
+name: tslam
+root: ~/gt/tslam/crew/cpp
+
+windows:
+  - ws:
+      panes:
+        - 
+  - test: 
+      panes:
+        - 
+        - 

@@ -123,3 +123,9 @@ fi
 if [[ -f "${HOME}/.zshrc.local" ]]; then
   source "${HOME}/.zshrc.local"
 fi
+
+
+# --- TaskSLAM completion ---
+if command -v tslam &>/dev/null; then
+  eval "$(tslam completion zsh)"
+fi
